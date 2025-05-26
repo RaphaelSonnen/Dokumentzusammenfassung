@@ -1,0 +1,10 @@
+from unstructured.partition.auto import partition
+
+pdf_path = r"C:\Users\rsonnen\Desktop\Sicherung\2021-295\2021-295\LP1\Begutach\2021-295_2631_km_123,348_-_21_-_S_Bernd(1)_R000000.pdf"
+
+try:
+    elements = partition(pdf_path)
+    for el in elements:
+        print(el.text)
+except Exception as e:
+    print("Fehler:", e)

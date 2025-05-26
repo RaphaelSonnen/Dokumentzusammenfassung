@@ -1,0 +1,12 @@
+# tested with Python 3.11 – Mai 2025
+unstructured[all-docs]==0.16.25
+sentence-transformers==2.7.0
+chromadb==1.0.9
+llama-index==0.12.37
+llama-index-vector-stores-chroma>=0.4     # Adapter
+spacy==3.7.4
+sqlalchemy==2.0.29
+ollama>=0.4.7                             # offizieller Client!
+python-dotenv==1.0.1
+typer[all]==0.9.0
+rich==13.7.1
