@@ -14,16 +14,20 @@ Local Document AI – Quickstart
     $ curl -fsSL https://ollama.com/install.sh | sh   # or via pkg manager
     $ ollama pull gemma:27b
 
-3.  Ingest & analyse your project folder
+3.  Provide your Jina API key
+
+    Add `JINA_API_KEY=<your key>` to `.env` or export it in your shell
+
+4.  Ingest & analyse your project folder
 
     $ python -m local_doc_ai.cli ingest /path/to/project
     $ python -m local_doc_ai.cli analyse
 
-4.  Build vector index
+5.  Build vector index
 
     $ python -m local_doc_ai.cli build-index
 
-5.  Chat with your docs
+6.  Chat with your docs
 
     $ python -m local_doc_ai.cli chat
 

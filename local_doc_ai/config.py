@@ -11,7 +11,7 @@ EMBEDDING_MODEL = os.getenv(
     "EMBED_MODEL",
     "jina-embeddings-v2-base-de"  # 768-d bilingual DE-EN
 )
-JINA_API_KEY = os.getenv("jina_6b29f412d4bd418c9b870526ae53ada9ZTxj91aqDtXsKWXLSDpR0D7B5WSv")      # new
+JINA_API_KEY = os.getenv("JINA_API_KEY")
 
 LLM_MODEL = os.getenv("LLM_MODEL", "gemma3:27b")  # Ollama model tag
 CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", 800))
