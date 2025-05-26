@@ -8,7 +8,8 @@ __pycache__/
 
 # Folders
 docs
-
+local_doc_ai/vector_store/chroma.sqlite3
+FileToPdfConverter 3.exe
 # Distribution / packaging
 .Python
 build/
@@ -174,4 +175,5 @@ cython_debug/
 .ruff_cache/
 
 # PyPI configuration file
-.pypirc
+.pypirclocal_doc_ai/vector_store/
+FileToPdfConverter 3.exe
