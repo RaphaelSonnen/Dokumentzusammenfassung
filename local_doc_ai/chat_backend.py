@@ -1,23 +1,17 @@
-import ollama                             # ← bleibt, um Verfügbarkeit zu prüfen
+import ollama
 from llama_index.core.query_engine.retriever_query_engine import RetrieverQueryEngine
 from llama_index.core import StorageContext, VectorStoreIndex, Settings
 from chromadb import PersistentClient
 from llama_index.vector_stores.chroma import ChromaVectorStore
 from llama_index.core.embeddings import BaseEmbedding
-from .config import VECTOR_DIR, LLM_MODEL, TOP_K
-from llama_index.llms.ollama import Ollama      # ✔ offizieller Wrapper
-
-from .config import VECTOR_DIR, LLM_MODEL, TOP_K, EMBEDDING_MODEL
+from llama_index.llms.ollama import Ollama 
+from .config import VECTOR_DIR, LLM_MODEL, TOP_K, SYSTEM_PROMPT_DE
 from .embeddings import embed_texts
 
-
-from llama_index.core.embeddings import BaseEmbedding
-from .embeddings import embed_texts
-
-
+# Lokales Embed-Modell (Jina)
 class LocalEmbedding(BaseEmbedding):
     def __init__(self):
-        self._dim = 768   # Jina v2-base
+        self._dim = 768
         super().__init__()
 
     def _get_text_embedding(self, text: str):
@@ -31,30 +25,33 @@ class LocalEmbedding(BaseEmbedding):
     def dimension(self): return self._dim
 
 
-
-
 def get_query_engine():
-    # 1) Vector-Store laden
+    # Vector-Store
     client = PersistentClient(path=str(VECTOR_DIR))
     collection = client.get_or_create_collection("docs")
     vector_store = ChromaVectorStore(chroma_collection=collection)
 
-    # 2) Storage-Context + LLM
     storage_context = StorageContext.from_defaults(vector_store=vector_store)
-    llm = Ollama(model=LLM_MODEL, request_timeout=120.0)
 
-    # 3) Embed-Modell global registrieren (einmal reicht)
+    # Ollama-LLM mit deutschem System-Prompt
+    llm = Ollama(
+        model=LLM_MODEL,
+        request_timeout=120.0,
+        system_prompt=SYSTEM_PROMPT_DE,
+    )
+
+    # Embed-Modell global setzen
     if Settings.embed_model is None:
         Settings.embed_model = LocalEmbedding()
 
-    # 4) Index ↔ Query-Engine
     index = VectorStoreIndex.from_vector_store(
         vector_store=vector_store,
         storage_context=storage_context,
-        settings=Settings,      # nutzt unser Embed-Modell
+        settings=Settings,
     )
+
     engine = index.as_query_engine(
-        llm=llm,                # LLM für Antworten
-        similarity_top_k=TOP_K  # wie viele Chunks anhängen
+        llm=llm,
+        similarity_top_k=TOP_K,
     )
     return engine
