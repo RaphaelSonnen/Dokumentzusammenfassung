@@ -21,12 +21,22 @@ class TaskList(BaseModel):
     tasks: List[TaskItem]
 
 PROMPT = (
-    "Extrahiere **alle** Aufgaben in einer JSON-Liste:\n"
-    "```json\n"
-    "{\n  \"tasks\": [\n    {\"task\": \"…\", \"person\": \"…\", \"due\": \"…\"},\n    …\n  ]\n}\n"
-    "```\n"
-    "Gib ausschließlich das JSON ohne weitere Kommentare zurück."
+    "Identifiziere alle **Aufgaben** (To-Dos, Maßnahmen) im folgenden Text. "
+    "Gib sie als JSON-Objekt mit dem Feld \"tasks\" zurück. "
+    "Jede Aufgabe soll enthalten:\n"
+    "- \"task\": Kurzbeschreibung (was ist zu tun?)\n"
+    "- \"person\": zuständige Person oder Organisation (falls genannt)\n"
+    "- \"due\": Fälligkeits- oder Terminangabe (falls vorhanden)\n\n"
+    "Beispiel:\n"
+    "{\n"
+    "  \"tasks\": [\n"
+    "    {\"task\": \"Schalungsplan prüfen\", \"person\": \"Ingenieurbüro ABC\", \"due\": \"2024-06-15\"}\n"
+    "  ]\n"
+    "}\n\n"
+    "Falls keine Aufgaben vorkommen, gib \"tasks\": [] zurück. "
+    "**Antworte ausschließlich mit dem JSON, ohne jede Erklärung.**"
 )
+
 
 task_extractor = LLMTextCompletionProgram.from_defaults(
     output_cls=TaskList,

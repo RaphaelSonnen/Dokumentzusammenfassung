@@ -22,18 +22,32 @@ node_parser = SimpleNodeParser.from_defaults(
     chunk_overlap=CHUNK_OVERLAP,
 )
 
+# ---------------------------------------------------------------------
+# Neue, präzisere Prompts
 SUMMARY_PROMPT = (
-    "Du bist ein Assistent, der interne Projekt­unterlagen "
-    "für ein Ingenieur­büro zusammenfasst.\n"
-    "Gib maximal acht Stichpunkte (je ≤ 20 Wörter) auf Deutsch zurück:"
+    "Fasse die folgenden **Projektunterlagen** prägnant zusammen. "
+    "Konzentriere dich auf zentrale Projektdaten wie *Bauzeit* "
+    "(Start- und Endtermin), beteiligte **Firmen/Organisationen**, "
+    "wichtige *Maßnahmen* oder Meilensteine, geplante **Kosten/Budget** "
+    "und *Zuständigkeiten*. Verwende bis zu **8** Stichpunkte "
+    "(max. 20 Wörter je Punkt) in deutlicher, knapper Sprache. "
+    "**Nutze nur Informationen aus dem Text und keine Zusatzinfos.**\n\n"
+    "### Zusammenfassung:"
 )
 
 KPI_PROMPT = (
-    "Extrahiere ein JSON-Objekt namens \"kpis\" mit deutschen Schlüsseln "
-    "für wichtige Kennzahlen (z. B. Budget, Kosten, Termine, "
-    "Materialmengen, Projekt­nummer, Planstand) aus dem folgenden Text. "
-    "Gib ausschließlich das JSON zurück.\n\n"
+    "Lies den folgenden Text und **extrahiere wichtige Projekt-Kennzahlen**. "
+    "Gib das Ergebnis als JSON-Objekt mit dem Schlüssel \"kpis\" zurück. "
+    "Nutze **deutsche** Feldnamen **genau wie im Text**. Mögliche Felder: "
+    "\"Projektstart\", \"Projektende\", \"Bauzeit\", \"Budget\", "
+    "\"Gesamtkosten\", \"Materialmenge\", \"Projektbeteiligte\", "
+    "\"Projektleiter\", \"Planstand\" usw. "
+    "Nenne nur Kennzahlen, die ausdrücklich erwähnt werden. "
+    "Fehlende Werte darfst du weglassen oder auf null setzen. "
+    "**Wichtig:** Gib ausschließlich das JSON aus, ohne jeden Kommentar.\n\n"
+    "### KPIs:"
 )
+
 
 # ---------------------------------------------------------------------
 # Hilfs-Wrapper: sorgt dafür, dass **immer** SYSTEM_PROMPT_DE gesetzt ist
